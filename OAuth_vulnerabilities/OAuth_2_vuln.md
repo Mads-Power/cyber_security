@@ -1,3 +1,4 @@
+source: https://portswigger.net/web-security/oauth
 oAuth 2.0 code injection - Authorization injection attack:  
 remiodiation: pixie?
 reusing access tokens, the application/client may fail to expire used tokens. If the URL with the access token is leakd, then the attacker may be able to reuse the token. can lead to full account takeover.
