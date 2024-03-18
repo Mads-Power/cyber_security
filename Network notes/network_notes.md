@@ -19,7 +19,7 @@
     UDP the opposite, think of laggy video tranmission. 
     When protocol is chosen it devides the transmission up into bite-sized packets(TCP = segments, UDP = datagrams).
 
-    Layer 3 Network: Has the job to locate the destination of your request, so it uses IP addresses(Logical sddressings) to locate the webpage or destination and figures out the best route to take. IP addresses is designed to create order to networks by categorising and sorting them. common logial addressing(ip addresses) IPV4 IPV6.
+    Layer 3 Network: Has the job to locate the destination of your request, so it uses IP addresses(Logical addressings) to locate the webpage or destination and figures out the best route to take. IP addresses is designed to create order to networks by categorising and sorting them. common logial addressing(ip addresses) IPV4 IPV6.
 
     Layer 2 Data Link: Focuses on physical addressing, takes the IP address given to it by the network layer then ads in the physical MAC address of the reciving endpoint. Inside every network enabled computer is a NIC(Network Interface Card) wich comes with a unique MAC(Media Access Control) address to identify it.  Mac addresses can't be changed but they can be spoofed. 
     Data link layer has also the job to present the data in a format suitable for transmission.
@@ -47,8 +47,10 @@
         client to server -> ACK
 
 
-## Subnetting 
+## Subnetting / subnetmask
     subnetting splits up the number of hosts that can fit within the network, reprsented by a subnet mask. a subnet is representet as a number of four bytes(32 bits) ranging from 0 to 255.
+
+
 
 ## IP address explanation
     an IP address has four sets or octets of numbers each with the value up to 255. These are known as IP classes. Each is based on the first octet of IP addresses and is classified as AB or C. it the first octet begins with 0 bit, then it is of type class A. 
@@ -64,4 +66,14 @@
     Class D is for multicast and Class C for multipurposes
     ------------------------------------------------
 
-    
+## Data transferred through network
+1. simplex
+2. half-duplex
+3. full-duplex
+   
+Simplex: Data transferred in one direction is called simplex(sending information to a printer or another output device)
+
+Halv-duplex: can send data in both directions between two devices, but not at the same time
+
+Full-duplex: communication in both directions simultaneously
+
