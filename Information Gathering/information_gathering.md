@@ -19,7 +19,9 @@ first phase og pentest.
         - Learning about internal infrastructure of a target network/organisation
         - enumeration information from target systems
 
-## Passive: Website Recon & Footprinting
+## Passive
+
+### Passive: Website Recon & Footprinting
 
     Optain IP address: terminal -> host <DNS * hackersploit.org or google.com etc>
 
@@ -97,3 +99,42 @@ https://www.maltego.com/blog/using-google-dorks-to-support-your-open-source-inte
 
 - NB! getting some invalid soruce error
 - use `theHarvester -d DOMAIN -b all`
+
+## Active
+
+Active information gathering needs to be accepted by the site you want to scan.
+
+### Active: DNS Zone Transfers, DNS Interrogation
+
+- DNS = Domain Name System, protocol to resolve domane names/hostname to IP addresses
+- DNS Interrogation is the proccess of enumerationg DNS records for a sepcific domain
+- DNS Zone Transfers is transfering or copying zone files from one DNS server to another.
+- zone files = files that contain information about a domain
+- If misconfigured can lead to abuse from attackers to download zone files.
+- Tools dns zone transfer: dnsenum, dig, fierce
+
+### Nmap Host discovery and port scanning
+
+- Host Discovery: do a ping sweap,ping scan. use flag _-sn_ for no port scan.
+- use netdiscover for better GUI
+
+---
+
+`
+
+- Port Scanning
+  `-Pn` to disable ping scan
+  `-p-` all ports
+  `-sU` UDP ports
+  `-v` verbose scan
+  `-sV` service version scan flag
+  `-F` fast scan
+  `-O` trying to find OS, might not be accurate
+  `sC` running nmap scripts
+  `-T` from 0 -> 5, sneaky to insane `-T2`
+  `-oN outputnmap.txt` output to text file
+  `-oX outputnmap.xml` xml format
+- _filtered_ might means that port might have a firewall or closed
+
+nmap scan for tcp: `nmap -p- -Pn -v -sV -sC <ip>`
+nmap scan for udp: `nmap -sU -T4  <ip>`
