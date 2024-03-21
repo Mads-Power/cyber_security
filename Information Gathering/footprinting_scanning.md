@@ -6,4 +6,14 @@
 
 - bits = zeros and ones
 - OSI = Open Systems Interconnection
--
+
+## Network layer
+
+- layer 3
+- responsible for addressing, routing and forwarding data packets between devices and across different networks
+- primary goal is to determine optimal path for data travel
+  Protocols: Internet prtocol(IP), Internet Control Message Protocol(ICMP)
+
+IP Header Format
+
+- ![alt text](/assets/IP_header_format.png)
