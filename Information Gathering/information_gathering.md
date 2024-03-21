@@ -50,6 +50,8 @@ Add-on on firefox:
 
 ### Passive: DNS Recon
 
+https://medium.com/@techmindxperts/what-is-dnsrecon-full-guide-with-examples-355aba308332
+
 - python script
 - pre-packaged with kali
 - terminal tool
