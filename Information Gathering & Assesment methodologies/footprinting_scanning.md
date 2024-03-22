@@ -36,3 +36,26 @@ IP Header Format
 ![alt text](/assets/tcp_udp_comparison.png)
 
 ## Network Mapping / Host discovery
+
+### ping sweeps
+
+- network scanning techniques, discover live hosts.
+
+  ICMP Echo Request
+
+  - Type: 8
+  - Code: 0
+    ICMP Echo Reply:
+  - Type: 0
+  - Code: 0
+
+    = Host is online
+
+  ### Host Discovery with Nmap
+
+  - `nmap -sn <10.10.x.x/24> --send-ip` <-- scanning subnet hosts
+  - start wiresharp whn scanning with nmap to get the full picture(maybe)
+  - scanning different targets `nmap -sn 10.10.x.200-224`
+  - - TCP SYN ping : `nmap -sn -PS 10.10.x.x`
+  - TCP SYN ping with ports : `nmap -sn -PS1-1000 10.10.x.x`
+  -

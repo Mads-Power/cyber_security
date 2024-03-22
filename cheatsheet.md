@@ -30,5 +30,10 @@ use:
 
 - nmap scan for tcp: `nmap -p- -Pn -v -sV -sC <ip>`
 - nmap scan for udp: `nmap -sU -T4  <ip>`
+- TCP SYN ping : `nmap -sn -PS 10.10.x.x`
+- TCP SYN ping with ports : `nmap -sn -PS1-1000 10.10.x.x`
+  Quicker, but only shows if hosts are up or not
+- First `nmap -sn -v -T4 10.10.x.x`
+- second with port findings `nmap -sn -PS21,22,80,445`
 
 - Zone transfer with: `dnsenum google.com`: https://ankisinha.medium.com/dnsenum-a-command-line-information-gathering-tool-a535078207a6 , `$ fierce --domain google.com --subdomains accounts admin ads` : https://github.com/mschwager/fierce
