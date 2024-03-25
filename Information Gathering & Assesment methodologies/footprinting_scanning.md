@@ -58,4 +58,20 @@ IP Header Format
   - scanning different targets `nmap -sn 10.10.x.200-224`
   - - TCP SYN ping : `nmap -sn -PS 10.10.x.x`
   - TCP SYN ping with ports : `nmap -sn -PS1-1000 10.10.x.x`
-  -
+
+  ### Service version and OS Detection
+
+  - service version `-sV`
+  - OS detection `-O`
+  - focus aggresive scan on OS detection kernel`-O --osscan-guess`
+  - aggresive service detectiom `-sV --version-intensity <number f.eks:8(high)>`
+
+### Nmap scripting engine(NSE)
+
+- look at different scripts: `ls -al /usr/share/nmap/scripts/ | grep -e "http"`
+- `http-enum.nse`
+- Checks for the HTTP response headers `http-security-headers.nse`
+- default script scan `-sC`
+- more info on script `nmap --script-help=<script name>`
+- run one or more specified scripts `nmap -sS -sV -p- --script=< script> `
+- if FTP found, usfull script to run: `--script=ftp-anon`
