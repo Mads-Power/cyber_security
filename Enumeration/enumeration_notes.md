@@ -23,3 +23,10 @@
 - show content of share: `smbmap -H 10.10.x.x -u username -p 'password' -r 'C$'`
 - upload file from attacker to victim: `smbmap -H 10.10.x.x -u username -p 'password' --upload 'path/file/to/upload' 'smbshare\file'`
 - download a file: `smbmap -H 10.10.x.x -u username -p 'password' --download 'smbshare\file'`
+
+### Samba
+
+If you have found samba
+
+- null session rpcclient `rpcclient -U "" -N 10.10.10.x` - When connencted, server info `srvinfo`
+- enum4linux get OS info: `enum4linux -o 10.10.x.x `

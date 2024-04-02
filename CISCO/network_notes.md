@@ -88,3 +88,16 @@ The classic: Please Do Not Throw Sausage Pizza Away
   - flow control is the process of adjusting the flow of data from the sender to ensure the reciving host can handle all of it.
   - session multiplexing , multiple sessions
   - TCP: connection oriented,
+
+  ## OSI Layer 3 - Network
+
+  - The network layer is responsible for routing packets to their destination and for Quality of service
+  - IP is the bestknown Layer 3 protocol
+  - it is a connectionless protocol with no acknowledgements at Layer 3
+  - Other Layer 3 protocols include ICMP( Internet control message protocol) and IPSec
+  - the IP Header
+
+- Unicast Traffic: is to a single destination host
+- Broadcast Traffic: is to all hosts on the subnet
+- Multicast Traffic: is to multiple interested hosts
+- converting from Decimal to Binary:
