@@ -101,25 +101,38 @@ The classic: Please Do Not Throw Sausage Pizza Away
 - Broadcast Traffic: is to all hosts on the subnet
 - Multicast Traffic: is to multiple interested hosts
 
-
 **Converting from Decimal to Binary**
-      
+
       256-128-64-32-16-8-4-2-1
       236 = 011101100
-      
 
-  **IPv4 Addresses**
-  * an IPv4 address is 32 bits long
-  * it is written as a 4 octets in dotted decimal format
-  * each octet is 8 bits long(4x8 = 32)
-  
+**IPv4 Addresses**
+
+- an IPv4 address is 32 bits long
+- it is written as a 4 octets in dotted decimal format
+- each octet is 8 bits long(4x8 = 32)
+
 **Calculating IPv4 Address Octets in binary**
-    256-128-64-32-16-8-4-2-1
+256-128-64-32-16-8-4-2-1
+
 - convert to binary 129.168.10.15 = 11000000 10101000 00001010 00001111
-  
+
 **The Subnet Mask**
+
 - for a host to send traffic to another host in a different subnet, it must be forwarded by a router
 - the host therefor needs to understand if the destination is on the same or a different subnet in order to know how to send it
 - 32 bits long and can be written in dotted decimal or slash notation
 
 ## IP Address Classes
+
+/8 not many networks but alot of hosts per network
+/24 lots of networks but not alot of hosts per network
+**Class A**
+
+- assigned to networks with a large number of hosts
+- The high-order(First) bit in a class A address is always set to zero
+- the default subnetmask is /8
+- valid network addresses range from 1.0.0.0 to 126.0.0.0 /8
+- it allows for 126 networks and 16,777,214 host per network
+  **Class B and C**
+  **Class D and E**
