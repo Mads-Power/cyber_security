@@ -135,4 +135,18 @@ The classic: Please Do Not Throw Sausage Pizza Away
 - valid network addresses range from 1.0.0.0 to 126.0.0.0 /8
 - it allows for 126 networks and 16,777,214 host per network
   **Class B and C**
-  **Class D and E**
+  _Class B_
+  - Class B addresses are assigned to medium-sized to large-sized networks.
+  - the two high order bits in class B address are always set to binary 1 0
+  - the default subnet mask is /16
+  - valid network addresses range from 128.0.0.0 to 191.255.0.0 /16
+  - This allows for 16,384 networks and 65,534 hosts per network
+  - this would also be subnetted in a real worl environment
+    _Class C_
+  - Are used for small networks
+  - The three high-order bits in a class C address are always set to binary 1 1 0.
+  - The default subnetmask is /24
+  - valid nework addresses range from 192.0.0.0 to 223.255.255.0/24
+  - This allows for 2,097,152 networks and 254 hosts per network.
+  - This could be allocated as is for a real world network, or subnetted into smaller subnets.
+    **Class D and E**
