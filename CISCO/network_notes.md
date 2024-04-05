@@ -136,6 +136,7 @@ The classic: Please Do Not Throw Sausage Pizza Away
 - it allows for 126 networks and 16,777,214 host per network
   **Class B and C**
   _Class B_
+
   - Class B addresses are assigned to medium-sized to large-sized networks.
   - the two high order bits in class B address are always set to binary 1 0
   - the default subnet mask is /16
@@ -150,3 +151,12 @@ The classic: Please Do Not Throw Sausage Pizza Away
   - This allows for 2,097,152 networks and 254 hosts per network.
   - This could be allocated as is for a real world network, or subnetted into smaller subnets.
     **Class D and E**
+    _Class D_
+  - reserved for multicast addresses
+  - the four high-order bits in the class D address are always set to binary 1 1 1 0
+  - These addresses are not allocated to hosts and there is no default subnetmask
+  - address range: 224.0.0.0 to 239.255.255.255
+
+  _Class E_
+
+  - experemental and reserved for future use
