@@ -3,8 +3,15 @@
 ## 1 Information Gathering
 
 ![alt text](/assets/pentesting_flow.png)
-Quick notes
 
+**Penetration Testing Phases**
+1. Information Gathering
+2. Enumeration
+3. Exploitation
+4. Post Exploitation
+   1. Privelege Escalation
+   2. Maintain Persistant Access
+   3. Clearing Tracks
 ### 1.1 passive infogathering
 
 Looking for:
