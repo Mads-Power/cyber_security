@@ -1,5 +1,5 @@
 # Attack plan...
-
+others cheatsheet: https://blog.syselement.com/ine/courses/ejpt/ejpt-cheatsheet#host-based-attacks
 ## 1 Information Gathering
 
 ![alt text](/assets/pentesting_flow.png)
