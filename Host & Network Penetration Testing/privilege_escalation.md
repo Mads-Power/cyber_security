@@ -24,3 +24,9 @@ We already have low priv access and we are on Target machine
 2. change password: `openssl passwd -1 -salt abc password`, you will get the hashed password back, then replace it in the shadow file
 3. change /etc/shadow root password: `vim /etc/shadow`
  ![alt text](/assets/change_shadow_file.png)
+4. `su` type password, and you are super user
+
+**SUDO Priveleges**
+We already have low priv access and we are on Target machine.
+1. list of commands you user can run: `sudo -l`, example to look for: /usr/bin/man
+2. The 'man' can be executed as root: `sudo man ls` -> `!/bin/bash`, then you are elevated
